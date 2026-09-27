@@ -4,7 +4,6 @@ import {
   Swords,
   Users,
   Flame,
-  Plus,
   ArrowRight,
   Shield,
   Activity,
@@ -13,6 +12,9 @@ import {
 import { DashboardShell } from "@/components/common/dashboard-shell";
 import { StatCard } from "@/components/common/stat-card";
 import { LiveMatchCard } from "@/components/home/live-match-card";
+import { Hero } from "@/components/home/hero";
+import { FeaturedPlayerCard } from "@/components/home/featured-player";
+import { CTASection } from "@/components/home/cta-section";
 import { MOCK_MATCHES } from "@/services/match-service";
 import { MOCK_TOURNAMENTS } from "@/services/tournament-service";
 
@@ -23,38 +25,7 @@ export default function HomePage() {
   return (
     <DashboardShell>
       {/* Hero Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-950 border border-emerald-500/20 shadow-2xl">
-        <div className="absolute -right-10 -bottom-10 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 max-w-2xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
-            <Flame className="w-3.5 h-3.5 fill-emerald-400" />
-            SPRING 2026 CAMPUS LEAGUE SEASON
-          </div>
-          <h1 className="text-2xl sm:text-4xl font-black text-slate-100 tracking-tight leading-tight">
-            Welcome to <span className="emerald-gradient-text">SPORTIFY Arena</span>
-          </h1>
-          <p className="text-sm text-slate-400 font-medium leading-relaxed">
-            Real-time campus tournament scores, live league standings, fixture updates, and player statistics all in one unified platform.
-          </p>
-
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <Link
-              href="/tournaments"
-              className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-900/40 transition-all flex items-center gap-2"
-            >
-              <Trophy className="w-4 h-4" />
-              Explore Tournaments
-            </Link>
-            <Link
-              href="/matches"
-              className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold text-xs border border-slate-800 transition-all flex items-center gap-2"
-            >
-              <Swords className="w-4 h-4 text-emerald-400" />
-              Match Center
-            </Link>
-          </div>
-        </div>
-      </div>
+      <Hero />
 
       {/* Stat Metric Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -110,6 +81,8 @@ export default function HomePage() {
           </div>
 
           <LiveMatchCard match={liveMatch} />
+
+          <FeaturedPlayerCard />
 
           {/* Upcoming Fixtures Showcase */}
           <div className="glass-card p-6 rounded-3xl space-y-4">
@@ -203,6 +176,9 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* CTA Section */}
+      <CTASection />
     </DashboardShell>
   );
 }
