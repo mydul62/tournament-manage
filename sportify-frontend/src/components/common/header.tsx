@@ -32,18 +32,14 @@ export function Header({
     if (path.startsWith("/tournaments")) return "Tournament League Arena";
     if (path.startsWith("/matches")) return "Match Center & Live Scores";
     if (path.startsWith("/players")) return "Player Leaderboard & Roster";
+    if (path.startsWith("/teams")) return "Department Squad Directory";
     if (path.startsWith("/admin")) return "Administrative Control Center";
     if (path.startsWith("/captain")) return "Captain Squad Hub";
     return "Sportify Platform";
   };
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-30 h-16 bg-slate-950/80 border-b border-slate-800/80 backdrop-blur-xl transition-all duration-300 px-4 md:px-6 flex items-center justify-between gap-4",
-        isSidebarCollapsed ? "md:pl-24" : "md:pl-68"
-      )}
-    >
+    <header className="sticky top-0 z-30 h-16 w-full bg-slate-950/85 border-b border-slate-800/80 backdrop-blur-xl px-4 md:px-6 flex items-center justify-between gap-4">
       {/* Left: Mobile Menu Trigger & Dynamic Title */}
       <div className="flex items-center gap-3">
         <button
@@ -89,14 +85,6 @@ export function Header({
           <Radio className="w-3.5 h-3.5 animate-pulse text-emerald-400" />
           <span>CSE vs EEE (2-1)</span>
         </div>
-
-        {/* Filter / Quick Toggle Button */}
-        <button
-          className="p-2 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-900 border border-slate-800/60 transition-colors"
-          title="Filters & Views"
-        >
-          <SlidersHorizontal className="w-4 h-4" />
-        </button>
 
         {/* Notifications Dropdown Container */}
         <div className="relative">
