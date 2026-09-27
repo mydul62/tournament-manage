@@ -6,8 +6,10 @@ import { DashboardShell } from "@/components/common/dashboard-shell";
 import { TournamentCard } from "@/components/tournaments/tournament-card";
 import { TournamentFilters } from "@/components/tournaments/tournament-filters";
 import { MOCK_TOURNAMENTS } from "@/services/tournament-service";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function TournamentsPage() {
+  const { isAdmin } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSport, setSelectedSport] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -33,10 +35,13 @@ export default function TournamentsPage() {
           </p>
         </div>
 
-        <button className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 self-start sm:self-auto">
-          <Plus className="w-4 h-4" />
-          Create Tournament
-        </button>
+        {/* Create button visible only for Admin */}
+        {isAdmin && (
+          <button className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 self-start sm:self-auto">
+            <Plus className="w-4 h-4" />
+            Create Tournament
+          </button>
+        )}
       </div>
 
       {/* Filter Bar */}
