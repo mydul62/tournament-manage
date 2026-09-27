@@ -3,10 +3,11 @@ import {
   Trophy,
   Swords,
   Users,
-  ShieldCheck,
+  Shield,
   Radio,
   Settings,
   User,
+  BarChart2,
   LucideIcon,
   HelpCircle,
 } from "lucide-react";
@@ -16,7 +17,6 @@ export interface NavItem {
   href: string;
   icon: LucideIcon;
   badge?: string;
-  role?: "Admin" | "Captain" | "User";
 }
 
 export interface NavGroup {
@@ -24,29 +24,41 @@ export interface NavGroup {
   items: NavItem[];
 }
 
-export const sidebarNavigation: NavGroup[] = [
+// User Navigation (Viewer / Sports Experience)
+export const userNavigation: NavGroup[] = [
   {
-    groupLabel: "MAIN",
+    groupLabel: "EXPLORE",
     items: [
-      { title: "Dashboard", href: "/", icon: LayoutDashboard },
+      { title: "Home Arena", href: "/", icon: LayoutDashboard },
       { title: "Tournaments", href: "/tournaments", icon: Trophy, badge: "Live" },
       { title: "Match Center", href: "/matches", icon: Swords },
+      { title: "Department Teams", href: "/teams", icon: Shield },
       { title: "Players & Stats", href: "/players", icon: Users },
+    ],
+  },
+  {
+    groupLabel: "LEAGUE DATA",
+    items: [
+      { title: "Official Standings", href: "/tournaments", icon: BarChart2 },
+    ],
+  },
+];
+
+// Admin Navigation (Full System Control Center)
+export const adminNavigation: NavGroup[] = [
+  {
+    groupLabel: "CONTROL CENTER",
+    items: [
+      { title: "Admin Console", href: "/admin", icon: LayoutDashboard },
+      { title: "Live Match Control", href: "/admin/matches", icon: Radio, badge: "Control" },
     ],
   },
   {
     groupLabel: "MANAGEMENT",
     items: [
-      { title: "My Squad", href: "/captain/squad", icon: ShieldCheck, role: "Captain" },
-      { title: "Admin Console", href: "/admin", icon: Settings, role: "Admin" },
-      { title: "Live Score Control", href: "/admin/matches", icon: Radio, role: "Admin" },
-    ],
-  },
-  {
-    groupLabel: "SYSTEM",
-    items: [
-      { title: "User Profile", href: "/profile", icon: User },
-      { title: "Help & Rules", href: "/help", icon: HelpCircle },
+      { title: "Manage Tournaments", href: "/admin/tournaments", icon: Trophy },
+      { title: "Manage Teams", href: "/admin/teams", icon: Shield },
+      { title: "Manage Players", href: "/admin/players", icon: Users },
     ],
   },
 ];

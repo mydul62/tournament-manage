@@ -12,8 +12,9 @@ import {
   Sparkles,
   Zap,
   X,
+  ShieldAlert,
 } from "lucide-react";
-import { sidebarNavigation, NavGroup, NavItem } from "@/config/navigation";
+import { userNavigation, adminNavigation, NavGroup, NavItem } from "@/config/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 
@@ -31,8 +32,10 @@ export function Sidebar({
   onCloseMobile,
 }: SidebarProps) {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, isAdmin, role, switchRole } = useAuth();
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
+
+  const activeNavigation = isAdmin ? adminNavigation : userNavigation;
 
   const isNavActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -93,11 +96,6 @@ export function Sidebar({
         {isCollapsed && hoveredNav === item.title && (
           <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-3 py-1.5 rounded-lg bg-slate-900 text-slate-100 text-xs font-semibold whitespace-nowrap shadow-xl border border-slate-700/80 z-50 pointer-events-none">
             {item.title}
-            {item.badge && (
-              <span className="ml-2 text-[10px] text-emerald-400 font-bold uppercase">
-                ({item.badge})
-              </span>
-            )}
           </div>
         )}
       </div>
@@ -111,7 +109,6 @@ export function Sidebar({
         <Link href="/" className="flex items-center gap-3 group overflow-hidden">
           <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-900/40 group-hover:scale-105 transition-all">
             <Trophy className="w-5 h-5 stroke-[2.5]" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full ring-2 ring-slate-950 animate-ping" />
           </div>
           {!isCollapsed && (
             <motion.div
@@ -122,8 +119,10 @@ export function Sidebar({
             >
               <span className="font-black text-lg tracking-wider text-slate-100 flex items-center gap-1.5">
                 SPORTIFY
-                <span className="text-[10px] uppercase font-extrabold tracking-widest px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  PRO
+                <span className={`text-[10px] uppercase font-extrabold tracking-widest px-1.5 py-0.5 rounded border ${
+                  isAdmin ? "bg-amber-500/20 text-amber-400 border-amber-500/30" : "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                }`}>
+                  {isAdmin ? "ADMIN" : "ARENA"}
                 </span>
               </span>
               <span className="text-[11px] font-medium text-slate-400 -mt-1 flex items-center gap-1">
@@ -154,7 +153,7 @@ export function Sidebar({
 
       {/* Navigation Group Sections */}
       <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
-        {sidebarNavigation.map((group: NavGroup) => (
+        {activeNavigation.map((group: NavGroup) => (
           <div key={group.groupLabel} className="space-y-1">
             {!isCollapsed && (
               <h3 className="px-3 text-[10px] font-extrabold text-slate-500 tracking-widest uppercase mb-1">
@@ -168,8 +167,32 @@ export function Sidebar({
         ))}
       </div>
 
-      {/* User Footer Profile & Settings */}
-      <div className="p-3 border-t border-slate-800/80 bg-slate-900/60">
+      {/* Role Switcher & User Profile Footer */}
+      <div className="p-3 border-t border-slate-800/80 bg-slate-900/60 space-y-2">
+        {!isCollapsed && (
+          <div className="p-2 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
+            <span className="text-[11px] font-bold text-slate-400">Mode:</span>
+            <div className="flex gap-1">
+              <button
+                onClick={() => switchRole("User")}
+                className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${
+                  role === "User" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                User
+              </button>
+              <button
+                onClick={() => switchRole("Admin")}
+                className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${
+                  role === "Admin" ? "bg-amber-600 text-white" : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                Admin
+              </button>
+            </div>
+          </div>
+        )}
+
         <div
           className={cn(
             "flex items-center gap-3 p-2 rounded-xl bg-slate-900/90 border border-slate-800/80 shadow-md",
@@ -178,8 +201,8 @@ export function Sidebar({
         >
           <div className="relative shrink-0">
             <img
-              src={user?.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"}
-              alt={user?.name || "User Avatar"}
+              src={user?.avatarUrl}
+              alt={user?.name}
               className="w-9 h-9 rounded-lg object-cover ring-2 ring-emerald-500/50"
             />
             <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 rounded-full ring-2 ring-slate-950" />
@@ -196,16 +219,6 @@ export function Sidebar({
               </div>
             </div>
           )}
-
-          {!isCollapsed && (
-            <button
-              onClick={() => console.log("Logout")}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800/80 transition-colors"
-              title="Logout"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          )}
         </div>
       </div>
     </div>
@@ -213,7 +226,6 @@ export function Sidebar({
 
   return (
     <>
-      {/* Desktop Sidebar Container */}
       <aside
         className={cn(
           "hidden md:flex flex-col fixed left-0 top-0 bottom-0 z-40 bg-slate-950/95 border-r border-slate-800/80 backdrop-blur-2xl transition-all duration-300 ease-in-out",
@@ -223,7 +235,6 @@ export function Sidebar({
         {navContent}
       </aside>
 
-      {/* Mobile Drawer (Sheet) Overlay */}
       <AnimatePresence>
         {isMobileOpen && (
           <>
