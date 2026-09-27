@@ -2,7 +2,7 @@ export * from "./tournament";
 export * from "./match";
 export * from "./player";
 
-export type UserRole = "Admin" | "Captain" | "User";
+export type UserRole = "Admin" | "User";
 
 export interface User {
   id: string;

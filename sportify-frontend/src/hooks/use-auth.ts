@@ -1,18 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { User } from "@/types";
-import { mockUser } from "@/store/use-auth-store";
+import { useState, useEffect } from "react";
+import { User, UserRole } from "@/types";
+import { mockAdminUser, mockStandardUser } from "@/store/use-auth-store";
 
 export function useAuth() {
-  const [user] = useState<User | null>(mockUser);
-  const [isLoading] = useState(false);
+  const [role, setRole] = useState<UserRole>("Admin");
+  const [user, setUser] = useState<User>(mockAdminUser);
+
+  useEffect(() => {
+    const savedRole = localStorage.getItem("sportify_user_role") as UserRole;
+    if (savedRole && (savedRole === "Admin" || savedRole === "User")) {
+      setRole(savedRole);
+      setUser(savedRole === "Admin" ? mockAdminUser : mockStandardUser);
+    }
+  }, []);
+
+  const switchRole = (newRole: UserRole) => {
+    setRole(newRole);
+    setUser(newRole === "Admin" ? mockAdminUser : mockStandardUser);
+    localStorage.setItem("sportify_user_role", newRole);
+  };
 
   return {
     user,
-    isAuthenticated: !!user,
-    isLoading,
-    isAdmin: user?.role === "Admin",
-    isCaptain: user?.role === "Captain" || user?.role === "Admin",
+    role,
+    switchRole,
+    isAdmin: role === "Admin",
+    isUser: role === "User",
   };
 }

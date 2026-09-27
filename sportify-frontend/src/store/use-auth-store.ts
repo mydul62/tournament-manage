@@ -1,19 +1,17 @@
-import { User } from "@/types";
+import { User, UserRole } from "@/types";
 
-export interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (user: User) => void;
-  logout: () => void;
-}
-
-// Simple state placeholder ready for zustand / react state integration
-export const mockUser: User = {
-  id: "usr-1",
-  name: "Alex Vance",
-  email: "alex.vance@university.edu",
+export const mockAdminUser: User = {
+  id: "usr-admin",
+  name: "Alex Vance (Admin)",
+  email: "admin@sportify.edu",
   role: "Admin",
   avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
-  teamId: "team-cse-1",
+};
+
+export const mockStandardUser: User = {
+  id: "usr-[user]",
+  name: "Jordan Lee (Spectator)",
+  email: "jordan@university.edu",
+  role: "User",
+  avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
 };
